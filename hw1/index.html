@@ -42,7 +42,7 @@
 		
 		<br>
 
-		Link to GitHub repository:<a href="https://github.com/cal-cs184-student/hw-webpages-RandyBui2">https://github.com/cal-cs184-student/hw-webpages-RandyBui2</a>
+		Link to GitHub repository:<a href="https://github.com/cal-cs184-student/hw1-rasterizer-randy">https://github.com/cal-cs184-student/hw1-rasterizer-randy</a>
 
 		<figure>
 			<img src="lion.jpg" alt="Lion" style="width:50%"/>
@@ -74,7 +74,7 @@
 		</figure>
 		
 		<h2>Task 2: Antialiasing by Supersampling</h2>
-		<p>For each pixel in the triangle's bounding box, we test \(sqrt(sample_rate)*sqrt(sample_rate)\) subpixels distributed across the current pixel in a grid. 
+		<p>For each pixel in the triangle's bounding box, we test \(sqrt(sample\_rate)*sqrt(sample\_rate)\) subpixels distributed across the current pixel in a grid. 
 			If the subpixel passes the line tests, we write the subpixel's color, 
 			which is calculated using Barycentric coordinates, unto the sample buffer. 
 			The resolve_to_framebuffer then takes the sample_buffer and takes a straight average of each subpixel to downsample the image. We also did some clerical changes to support our aliasing in set_sample_rate and clear_buffers.
