@@ -74,7 +74,13 @@
 		</figure>
 		
 		<h2>Task 2: Antialiasing by Supersampling</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>For each pixel in the triangle's bounding box, we test \sqrt(sample_rate)*sqrt(sample_rate)\ subpixels distributed across the current pixel in a grid. 
+			If the subpixel passes the line tests, we write the subpixel's color, 
+			which is calculated using Barycentric coordinates, unto the sample buffer. 
+			The resolve_to_framebuffer then takes the sample_buffer and takes a straight average of each subpixel to downsample the image. We also did some clerical changes to support our aliasing in set_sample_rate and clear_buffers.
+
+
+		</p>
 				<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
