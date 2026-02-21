@@ -112,8 +112,8 @@
 		</figure>
 		<h2>Task 4: Barycentric coordinates</h2>
 		
-		<p>We follow the same procedure in triangle rasterization with super sampling. Except now we don't take the pixel's color at face value.
-			Instead we using Barycentric coordinates to blend the colors, this softens out the edges, allowing the triangle to blend with the surrounding pixels, allowing for a smoother transition.
+		<p> We follow the same sampling pipeline as in our rasterizing triangle, but instead of assigning a flat color to each subsample,
+			 we use Barycentric coordinates to determine the color at each subsample. We assign an alpha, beta and gamma, which are weights described by the relative distance between the subpixel and the vertices. These variables must sum to 1, so that we get a continuous color gradient.  
 			
 		</p>
 		<figure style = "text-align: center" class="center">
@@ -122,7 +122,7 @@
 
 		</figure>
 		<h2>Task 5: "Pixel sampling" for texture mapping</h2>
-			
+
 				<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -131,13 +131,13 @@
 				  <figcaption>Sample 4 with only 1 pixel sampling</figcaption>
 				</td>
 				<td style="text-align: center;">
-				  <img src="assets\images\Task5-4px.png"  width="400px"/>
+				  <img src="assets\images\task5-4px.png"  width="400px"/>
 				  <figcaption>Sample 4 with 4 pixel sampling</figcaption>
 				</td>
 			  </tr>
 			  <tr>
 				<td colspan="2" style="text-align: center;">
-				  <img src="assets\images\Task5-16px.png"  width="400px"/>
+				  <img src="assets\images\task5-16px.png"  width="400px"/>
 				  <figcaption>Sample 4 with 16 pixel sampling</figcaption>
 				</td>
 			  </tr>
