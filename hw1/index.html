@@ -67,7 +67,7 @@
 		<p>
 			This algorithm is no worse than the bounding box method, because it is the bounding box method. We create a bounding box in the first step by checking the min/max coordinates, and then we evaluate every pixel inside that bounding box.
 		</p>
-		<figure class="center">
+		<figure style="text-align: center;" class="center">
 			<img src="assets\images\CoolTriangle-task1.png" width="400px" />
 				  <figcaption>Interesting how without aliasing the image just deletes this portion of the triangle to get the desired effect</figcaption>
 
@@ -75,82 +75,100 @@
 		
 		<h2>Task 2: Antialiasing by Supersampling</h2>
 		<p>For each pixel in the triangle's bounding box, we test \(sqrt(sample\_rate)*sqrt(sample\_rate)\) subpixels distributed across the current pixel in a grid. 
-			If the subpixel passes the line tests, we write the subpixel's color, 
-			which is calculated using Barycentric coordinates, unto the sample buffer. 
-			The resolve_to_framebuffer then takes the sample_buffer and takes a straight average of each subpixel to downsample the image. We also did some clerical changes to support our aliasing in set_sample_rate and clear_buffers.
+			If the subpixel passes the line tests, we write the subpixel's color into the sample buffer.
+			The resolve_to_framebuffer then takes the sample_buffer and takes a straight average of each subpixel to downsample the image. We also did some clerical changes to support our anti-aliasing in set_sample_rate and clear_buffers.
 
-
+		</p>
+		<p>
+			The reason why supersampling is useful is because the triangle edges have hard on/off coverage at the pixel level, meaning jaggie aliasing. Supersampling 
+			alleviates this by sampling the pixel at multiple places and taking averages so that pixels at fringes are blended, effectively smoothing out our edges, removing the jaggies
 		</p>
 				<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
 				  <img src="assets\images\2-1px-zoom.png" width="400px"/>
-				  <figcaption>Sample 4 with only 1 pixel aliasing</figcaption>
+				  <figcaption>Sample 4 with only 1 pixel sampling</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets\images\2-4px-zoom.png"  width="400px"/>
-				  <figcaption>Sample 4 with 4 pixel aliasing</figcaption>
+				  <figcaption>Sample 4 with 4 pixel sampling</figcaption>
 				</td>
 			  </tr>
 			  <tr>
-				<td style="text-align: center;">
+				<td colspan="2" style="text-align: center;">
 				  <img src="assets\images\2-16px-zoom.png"  width="400px"/>
-				  <figcaption>Sample 4 with 16 pixel aliasing</figcaption>
+				  <figcaption>Sample 4 with 16 pixel sampling</figcaption>
 				</td>
-
 			  </tr>
 			</table>
 		</div>
 		<h2>Task 3: Transforms</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		
+		<figure style = "text-align: center" class="center">
+			<img src="assets/images/my_robot.png" width = "400px">
+			<figcaption>Robot with a tie doing an arm wave</figcaption>
 
+		</figure>
 		<h2>Task 4: Barycentric coordinates</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		
+		<p>We follow the same procedure in triangle rasterization with super sampling. Except now we don't take the pixel's color at face value.
+			Instead we using Barycentric coordinates to blend the colors, this softens out the edges, allowing the triangle to blend with the surrounding pixels, allowing for a smoother transition.
+			
+		</p>
+		<figure style = "text-align: center" class="center">
+			<img src="assets/images/Gradient-Task4.png" width = "400px">
+			<figcaption>Task 4 -- Gradient with sample rate 1</figcaption>
 
+		</figure>
 		<h2>Task 5: "Pixel sampling" for texture mapping</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<div style="display: flex; flex-direction: column; align-items: center;">
+			
+				<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="assets\images\CoolTriangle-task1.png" width="400px"/>
-				  <figcaption></figcaption>
+				  <img src="assets\images\Task5-1px.png" width="400px"/>
+				  <figcaption>Sample 4 with only 1 pixel sampling</figcaption>
 				</td>
 				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="assets\images\Task5-4px.png"  width="400px"/>
+				  <figcaption>Sample 4 with 4 pixel sampling</figcaption>
 				</td>
 			  </tr>
 			  <tr>
-				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				<td colspan="2" style="text-align: center;">
+				  <img src="assets\images\Task5-16px.png"  width="400px"/>
+				  <figcaption>Sample 4 with 16 pixel sampling</figcaption>
 				</td>
 			  </tr>
 			</table>
 		</div>
 		<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="assets\images\z_n.png" width="400px"/>
+				  <figcaption>Google's landing page art Feb. 19, using Zero Level and Nearest pixel filtering</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="assets\images\z_l.png"  width="400px"/>
+				  <figcaption>Google's landing page art Feb. 19, using Zero Level and Bilinear pixel filtering</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td  style="text-align: center;">
+				  <img src="assets\images\n_n.png"  width="400px"/>
+				  <figcaption>Google's landing page art Feb. 19, using Nearest level and Nearest pixel filtering</figcaption>
+				</td>
 
-		<h2>(Optional) Task 7: Extra Credit - Draw Something Creative!</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
+				<td  style="text-align: center;">
+				  <img src="assets\images\n_l.png"  width="400px"/>
+				  <figcaption>Google's landing page art Feb. 19, using Nearest Level and Nearest pixel filtering</figcaption>
+				</td>
+			  </tr>
+			</table>
 		</div>
 	</body>
 </html>
