@@ -289,9 +289,12 @@ the center of each face.
 1. Centroid insertion. For every original triangle face, a new vertex is inserted at the face centroid (v₀ + v₁ + v₂) / 3 and connected to all three corners, splitting each triangle into three smaller ones.
 2. Old edge flipping. Every edge that existed before this subdivision step is flipped. This is what gives √3-subdivision its character — the edges "rotate" by 30° each step, and after two applications they have rotated a full 60°, returning to a configuration topologically equivalent to the original but 3× refined.
 3. Old vertex smoothing. Each original vertex position is updated using:
+
+
 \(a(n) = (4 - 2·cos(2π/n)) / 9\)
 
-\(new_pos = (1 - a(n)) · old_pos + (a(n) / n) · Σ(neighbor positions)\)
+\(new_{pos} = (1 - a(n)) · old_{pos} + (a(n) / n) · Σ\)neighbors
+
 where n is the vertex degree. This specific a is derived to guarantee C² continuity of the limit surface.
 	<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
