@@ -75,8 +75,7 @@ features.
 		The De Casteljau algorithm is a recursive method for evaluating points on a bezier curve at a given parameter t \(	&#8712; [0,1] \), and n+1 control points. The algorithm repeatedly performs the following equation \(p_i' = (1-t)*p_i+t*p_{i+1}\), reducing the number of points until we get to a single point on the bezier curve at t. 
 		In our implementation, we iterate through the input vector of points and compute each point using the formula described earlier, using the public parameter t,  pushing the result into a new Vector2D vector. This returns an n-1 vector, allowing us to step through each step of the algorithm until we get to a single point, which the the point on the curve.
 
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
-		<div style="display: flex; flex-direction: column; align-items: center;">
+			<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
@@ -108,7 +107,7 @@ features.
 				  <figcaption>Curve revealed</figcaption>
 				</td>
 			  </tr>
-<tr>
+			  <tr>
 				<td colspan="2" style="text-align: center;">
 				  <img src="assets\images\bezier-1-augmented.png"  width="400px"/>
 				  <figcaption>Changed up curve, with a changed parameter, t</figcaption>
@@ -163,6 +162,7 @@ pair of triangles, and the half-edges of both faces are updated accordingly to
 reflect the new triangle configurations. Vertex and face half-edge pointers are 
 also updated to ensure consistency throughout the mesh.
 
+
 To get a bit meta, I thought that this operation was completed without error the first time I implemented it because I did not test it thoroughly before moving on with the rest of the project. I had only notice that there was an error once I got to upsampling in problem 6, in which flipping would cause holes, and crash the program. This took a long time to figure out, as I believed that the problem lied in my upsampling portion of the code. I had accidentally assigned half-edges in a way where it wasn't obvious that there was a mistake the first couple passes.
 				<figure style="text-align: center;" class="center">
 			<img src="assets/images/teapot-flips.png" width="400px" />
@@ -180,6 +180,7 @@ original edge and one of its two faces are reused rather than deleted and
 recreated. As in Part 4, we exhaustively reassign all pointers for every 
 element in the modified mesh, including those that did not change, to prevent 
 subtle bugs from missed assignments.
+
 
 		To add on to the the previous part, this portion and the last are integral parts in the integration of upscalling, so I had also came back to see if this was part of the problem. I actually started by debugging this portion of the code first due to its complexity, and the swaps/assignments were correct, one of the things I did change on the second pass was the isNew flags.
 		
@@ -207,7 +208,8 @@ new position is computed as a weighted average of its original position and
 the sum of its neighbors' positions, using the Loop subdivision weights based 
 on vertex degree. For each original edge, the midpoint position is computed 
 as a weighted combination of the four vertices of the two triangles sharing 
-that edge.
+that edge. 
+
 
 Second, we perform 4-1 subdivision by first snapshotting all original edges 
 into a separate list, then splitting each of them in order. Snapshotting is 
@@ -217,13 +219,15 @@ Each newly inserted midpoint vertex receives the pre-computed edge midpoint
 position. After all splits, we iterate over all edges and flip any new edge 
 that connects an old vertex to a new vertex, completing the 4-1 subdivision 
 pattern. Finally, all vertex positions are updated from their stored new 
-positions.
+positions. 
+
 
 Sharp corners and edges tend to smooth out and shrink inward with each 
 iteration of loop subdivision, as the weighted averaging pulls vertices toward 
 their neighbors. This effect can be partially mitigated by pre-splitting edges 
 around sharp features, which increases the local vertex density and gives the 
 subdivision algorithm less room to smooth aggressively.
+
 
 The cube becomes asymmetric under repeated subdivision because the original 
 mesh has diagonals running in one direction per face, biasing the subdivision. 
@@ -278,8 +282,41 @@ the center of each face.
 			  </tr>
 			</table>
 		</div>
+		<h3>Part 6 -- Extra Credit: additional subdivion schemes \(sqrt(3)\)</h3>
+√3-subdivision is an alternative mesh refinement scheme with a slower, more isotropic refinement rate than Loop subdivision. Each application scales the mesh by a factor of √3 (so two applications yield a 3x refinement), compared to Loop's factor of 2 per step.
 
 
+1. Centroid insertion. For every original triangle face, a new vertex is inserted at the face centroid (v₀ + v₁ + v₂) / 3 and connected to all three corners, splitting each triangle into three smaller ones.
+2. Old edge flipping. Every edge that existed before this subdivision step is flipped. This is what gives √3-subdivision its character — the edges "rotate" by 30° each step, and after two applications they have rotated a full 60°, returning to a configuration topologically equivalent to the original but 3× refined.
+3. Old vertex smoothing. Each original vertex position is updated using:
+\(a(n) = (4 - 2·cos(2π/n)) / 9\)
+
+\(new_pos = (1 - a(n)) · old_pos + (a(n) / n) · Σ(neighbor positions)\)
+\(where n is the vertex degree. This specific a is derived to guarantee C² continuity of the limit surface.\)
+	<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="assets/images/sqrt3-1.png" width="400px"/>
+				  <figcaption>Teapot.dae \(sqrt(3)\) scheme no upscaling</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="assets/images/sqrt3-2.png" width="400px"/>
+				  <figcaption>Teapot.dae \(sqrt(3)\) scheme upscaled once</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="assets/images/sqrt3-3.png" width="400px"/>
+				  <figcaption>Teapot.dae \(sqrt(3)\) scheme upscaled twice</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="assets/images/sqrt3-4.png" width="400px"/>
+				  <figcaption>Teapot.dae \(sqrt(3)\) scheme upscaled thrice</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
 		</div>
 	</body>
 </html>
