@@ -23,6 +23,12 @@
 			body {
 				font-family: 'Inter', sans-serif;
 			}
+					.center{
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+				width: 50%;
+			}
 		</style>
 	</head>
 	<body>
@@ -48,9 +54,11 @@
 		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
 
 		<h2>Part 1: Ray Generation and Scene Intersection</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		For each pixel, we generate a number of camera rays, the number of rays is determined through ns_aa. We do this through sampling random points within the pixel using a uniform grid sampler. Each sample's coordinates are normalized to \([0,1]\) and mapped to the camera sensor plane at Z=-1 using the horizontal and vertical field of view angles. The ray direction is transformed from camera space to
+		world space using c2w rotation matrix, and then normalized. Each is ray is tested against the BVH for intersection, if there is an intersection we shade the pixel based on the surface properties of the collision. Final pixel color is an avearge radience across all samples.
+		
 
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
+		For triangle intersection we implemented the Möller-Trumbore algorithm, which solves for intersection point directly in barycentric coordinates. We create a linear system expressing using a ray and triangle, which expresses the intersection point both as a point along the ray and as a barycentric combination of the three vertices. Solving this system using cross products and dot products gives us the distance along the ray(t), and two barycentric coordinates (u & v). We can check the intersection by validating the conditions that \(u >0, v>0, u+v < 1 t\in [min_t, max_t] \). If all the conditions are valid, we can interpolate the vertex normals using barycentric weights to get a smooth surface normal at the collision.
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
