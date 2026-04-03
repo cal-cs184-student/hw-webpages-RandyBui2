@@ -51,8 +51,12 @@
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		In this homework we build a physics-based path tracer. We made a complete rendering pipeline: raw ray generation, camera ray generation, primitive intersection, BVH acceleration, and global illumination. 
 
+
+		One of the most interesting aspects of this assignment was how we get physically accurate renders through a method that doesn't use rasterization and a compute intensive approximation. Rather through path tracing we can still observe things like color bleeding and inter-reflection. 
+
+		As part of the extra credit challenge, we also adapated a different heuristic to the centroid heuristic. We used a well-documented Surface area heuristic for creation of BVH. This resulted in a larger buildtime, but a noticably smaller render time.
 		<h2>Part 1: Ray Generation and Scene Intersection</h2>
 		For each pixel, we generate a number of camera rays, the number of rays is determined through ns_aa. We do this through sampling random points within the pixel using a uniform grid sampler. Each sample's coordinates are normalized to \([0,1]\) and mapped to the camera sensor plane at Z=-1 using the horizontal and vertical field of view angles. The ray direction is transformed from camera space to
 		world space using c2w rotation matrix, and then normalized. Each is ray is tested against the BVH for intersection, if there is an intersection we shade the pixel based on the surface properties of the collision. Final pixel color is an avearge radience across all samples.
@@ -65,18 +69,18 @@
 			  <tr>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part1/beast_screenshot_4-2_17-59-53.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Monster normal lighting</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part1/teapot_screenshot_4-2_17-59-38.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Teapot normal lighting</figcaption>
 				</td>
 			  </tr>
 			  
 			  <tr >
 				<td colspan="2" style="text-align: center;">
 				  <img src="assets/images/Part1/CBspheres_lambertian_screenshot_4-2_2-11-12.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>CBSpheres_Lambertian normal lighting</figcaption>
 				</td>
 				
 			  </tr>
@@ -90,22 +94,22 @@
 			  <tr>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part2/CBgems_screenshot_4-2_2-25-55.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>CBSpheres_Lambertian </figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part2/CBlucy_screenshot_4-2_2-24-27.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>CBlucy</figcaption>
 				</td>
 			  </tr>
 			  
 			  <tr >
 				<td style="text-align: center;">
 				  <img src="assets/images/Part2/cow_screenshot_4-2_2-21-11.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>cow</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part2/maxplanck_screenshot_4-2_2-22-31.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Max Planck</figcaption>
 				</td>
 			  </tr>
 			</table>
@@ -126,12 +130,12 @@
 				  <img src="assets/images/Part3/bunny-hemisphere.png" width="400px"/>
 				  <img src="assets/images/Part3/bunny-dir.png" width="400px"/>
 
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>CBbunny Hemisphere lighting on top, direct lighting below</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part3/lucy-1024-1-hemisphere.png" width="400px"/>
 				<img src="assets/images/Part3/lucy-1024-1-direct.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>CBlucy Hemisphere lighting on top, direct lighting below</figcaption>
 				</td>
 			  </tr>
 			  </table>
@@ -139,19 +143,19 @@
 			  <tr >
 				<td style="text-align: center;">
 				  <img src="assets/images/Part3/3-1.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>1 light sample (very noisy) </figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part3/3-4.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>4 light sample (less noisy)</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part3/3-16.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>16 light samples (less noisier)</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part3/3-64.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>64 light samples (less noisierer)</figcaption>
 				</td>
 			  </tr>
 			</table>
@@ -165,27 +169,27 @@
 			  <tr >
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/accum_off_0.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation off, 0 max ray depth</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/accum_off_1.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation off, 1 max ray depth</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/accum_off_2.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation off, 2 max ray depth</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/accum_off_3.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation off, 3 max ray depth</figcaption>
 				</td>
 								<td style="text-align: center;">
 				  <img src="assets/images/Part4/accum_off_4.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation off, 4 max ray depth</figcaption>
 				</td>
 								<td style="text-align: center;">
 				  <img src="assets/images/Part4/accum_off_5.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation off, 5 max ray depth</figcaption>
 				</td>
 			  </tr>
 			  
@@ -195,27 +199,27 @@
 			  <tr >
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/accum_on_0.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation on, 0 max ray depth</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/accum_on_1.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation on, 1 max ray depth</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/accum_on_2.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation on, 2 max ray depth</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/accum_on_3.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation on, 3 max ray depth</figcaption>
 				</td>
 								<td style="text-align: center;">
 				  <img src="assets/images/Part4/accum_on_4.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation on, 4 max ray depth</figcaption>
 				</td>
 								<td style="text-align: center;">
 				  <img src="assets/images/Part4/accum_on_5.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation on, 5 max ray depth</figcaption>
 				</td>
 			  </tr>
 			  
@@ -225,28 +229,28 @@
 			  <tr >
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/roulette1.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation on, russian roulette, 1 max ray depth</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/roulette2.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation on, russian roulette, 2 max ray depth</figcaption>
 				</td>
 								<td style="text-align: center;">
 				  <img src="assets/images/Part4/CBbunny_screenshot_4-2_16-16-2.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation on, russian roulette, 3 max ray depth</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/roulette4.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation on, russian roulette, 4 max ray depth</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/roulette5.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation on, russian roulette, 5 max ray depth</figcaption>
 				</td>
 
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/roulette100.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>Accumulation on, russian roulette, 100 max ray depth</figcaption>
 				</td>
 			  </tr>
 			</table>
@@ -255,28 +259,28 @@
 			  <tr >
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/1.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>1 camera sample</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/2.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>2 camera samples</figcaption>
 				</td>
 								<td style="text-align: center;">
 				  <img src="assets/images/Part4/4.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>4 camera samples</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/8.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>8 camera samples</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/64.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>64 camera samples</figcaption>
 				</td>
 
 				<td style="text-align: center;">
 				  <img src="assets/images/Part4/1024.png" width="600px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>1024 camera samples</figcaption>
 				</td>
 			  </tr>
 			  
@@ -286,75 +290,104 @@
 		The second bounce fills in shadows that direct lighting leaves completely dark, but adds some color bleeding from the walls onto the object. The third bounce adds even more blending, and softens the shadows further. These effects are impossible in rasterization without something like ambient occlusion or light maps, which is why path tracing produces more physically accurate images. Russian roulette has an interesting property where the 100 allowable ray depth looks approximately the same as the lower max ray depth images. This is because the Russian Roulette heuristic terminates a lot of the paths early, and higher bounces contribute exponentially less energy. OThus the estimator correctly captures this without wasting compute on small contributions. 
 		<h2>Part 5: Adaptive Sampling</h2>
 		Adaptive sampling concentrates samples in pixels that are hard to converge. For each pixel, we track running statistics \(s1 = \sum \text{illum}\) and \(s2 = \sum \text{illum}^2\). Every <code>samplesPerBatch</code> samples, we compute the mean and variance and check if \(1.96*\sqrt{\text{mean}}*\sqrt{\text{variance}} > \text{MaxTolerance}*\text{mean} \). If so, the pixel has converged with a 0.95 confidence, and we can terminate the sampling early. In the rate images, blue pixels converge quickly and red pixels require the most samples. Reds typically form from complex shadow region and high frequency lighting variation areas.
-<table style="width: 100%; text-align: center; border-collapse: collapse;">
+		
+		
+		<div style="display: flex; flex-direction: column; align-items: center;">	
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part5/CBlucy_screenshot_4-2_17-12-39.png" width="400px"/>
 				  <img src="assets/images/Part5/CBlucy_screenshot_4-2_17-12-39_rate.png" width="400px"/>
 
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>CBlucy 2048 camera samples, and rate image (below)</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="assets/images/Part5/wall-e_screenshot_4-2_17-16-56.png" width="400px"/>
 				<img src="assets/images/Part5/wall-e_screenshot_4-2_17-16-56_rate.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <figcaption>wall-e 2048 camera samples, and rate image (below)</figcaption>
 				</td>
 			  </tr>
 			  </table>
+		</div>
 		<h2> Part 6: Extra Credit Opportunities</h2>
 		We implemented SAH BVH construction following a bucket based approach. For each axis, primitives are binned into 12 buckets by it's centroid, and we calculate a cost function <code>1+((SurfaceArea(left)*N_left+SurfaceArea(right)*N_right)/SurfaceArea(parent))</code> for every candidate split. We ran two comparisons, one of Bunny with 1024 camera samples, and 64 light samples, and dragon with 1024 camera samples, and 4 light samples. We saw exactly what we were expecting for a SAH heuristic, a larger build time and a reduced render time. A chart is provided below:
-			  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-  <thead>
-    <tr style="border-bottom: 0.5px solid var(--color-border-tertiary);">
-      <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Scene</th>
-      <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Heuristic</th>
-      <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Primitives</th>
-      <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Build time</th>
-      <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Render time</th>
-      <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Rays/sec (M)</th>
-      <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Isects/ray</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style="border-bottom: 0.5px solid var(--color-border-tertiary);">
-      <td style="padding: 10px 12px;">CBbunny</td>
-      <td style="padding: 10px 12px;">Centroid</td>
-      <td style="padding: 10px 12px;">28,588</td>
-      <td style="padding: 10px 12px;">0.0123s</td>
-      <td style="padding: 10px 12px;">1001.1s</td>
-      <td style="padding: 10px 12px;">6.16</td>
-      <td style="padding: 10px 12px;">5.03</td>
-    </tr>
-    <tr style="border-bottom: 0.5px solid var(--color-border-tertiary);">
-      <td style="padding: 10px 12px;">CBbunny</td>
-      <td style="padding: 10px 12px;">SAH</td>
-      <td style="padding: 10px 12px;">28,588</td>
-      <td style="padding: 10px 12px;">0.0870s</td>
-      <td style="padding: 10px 12px;">791.0s</td>
-      <td style="padding: 10px 12px;">7.26</td>
-      <td style="padding: 10px 12px;">3.49</td>
-    </tr>
-    <tr style="border-bottom: 0.5px solid var(--color-border-tertiary);">
-      <td style="padding: 10px 12px;">Dragon</td>
-      <td style="padding: 10px 12px;">Centroid</td>
-      <td style="padding: 10px 12px;">100,012</td>
-      <td style="padding: 10px 12px;">0.0575s</td>
-      <td style="padding: 10px 12px;">119.7s</td>
-      <td style="padding: 10px 12px;">3.90</td>
-      <td style="padding: 10px 12px;">7.45</td>
-    </tr>
-    <tr>
-      <td style="padding: 10px 12px;">Dragon</td>
-      <td style="padding: 10px 12px;">SAH</td>
-      <td style="padding: 10px 12px;">100,012</td>
-      <td style="padding: 10px 12px;">0.3642s</td>
-      <td style="padding: 10px 12px;">86.9s</td>
-      <td style="padding: 10px 12px;">5.15</td>
-      <td style="padding: 10px 12px;">4.67</td>
-    </tr>
-  </tbody>
-</table>
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+    <thead>
+      <tr style="border-bottom: 0.5px solid var(--color-border-tertiary);">
+        <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Scene</th>
+        <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Heuristic</th>
+        <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Primitives</th>
+        <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Build time</th>
+        <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Render time</th>
+        <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Render % diff</th>
+        <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Rays/sec (M)</th>
+        <th style="font-weight: 500; text-align: left; padding: 8px 12px;">Isects/ray</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom: 0.5px solid var(--color-border-tertiary);">
+        <td style="padding: 10px 12px;">CBbunny</td>
+        <td style="padding: 10px 12px;">Centroid</td>
+        <td style="padding: 10px 12px;">28,588</td>
+        <td style="padding: 10px 12px;">0.0123s</td>
+        <td style="padding: 10px 12px;">1001.1s</td>
+        <td style="padding: 10px 12px;">—</td>
+        <td style="padding: 10px 12px;">6.16</td>
+        <td style="padding: 10px 12px;">5.03</td>
+      </tr>
+      <tr style="border-bottom: 0.5px solid var(--color-border-tertiary);">
+        <td style="padding: 10px 12px;">CBbunny</td>
+        <td style="padding: 10px 12px;">SAH</td>
+        <td style="padding: 10px 12px;">28,588</td>
+        <td style="padding: 10px 12px;">0.0870s</td>
+        <td style="padding: 10px 12px;">791.0s</td>
+        <td style="padding: 10px 12px;">-21.0%</td>
+        <td style="padding: 10px 12px;">7.26</td>
+        <td style="padding: 10px 12px;">3.49</td>
+      </tr>
+      <tr style="border-bottom: 0.5px solid var(--color-border-tertiary);">
+        <td style="padding: 10px 12px;">Dragon</td>
+        <td style="padding: 10px 12px;">Centroid</td>
+        <td style="padding: 10px 12px;">100,012</td>
+        <td style="padding: 10px 12px;">0.0575s</td>
+        <td style="padding: 10px 12px;">119.7s</td>
+        <td style="padding: 10px 12px;">—</td>
+        <td style="padding: 10px 12px;">3.90</td>
+        <td style="padding: 10px 12px;">7.45</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 12px;">Dragon</td>
+        <td style="padding: 10px 12px;">SAH</td>
+        <td style="padding: 10px 12px;">100,012</td>
+        <td style="padding: 10px 12px;">0.3642s</td>
+        <td style="padding: 10px 12px;">86.9s</td>
+        <td style="padding: 10px 12px;">-27.4%</td>
+        <td style="padding: 10px 12px;">5.15</td>
+        <td style="padding: 10px 12px;">4.67</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
 			
-		</div>
-	</body>
+<div style="display: flex; flex-direction: column; align-items: center;">	
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="assets/images/Part6/CBbunny_screenshot_4-2_17-50-28.png" width="400px"/>
+
+				  <figcaption>CBbunny SAH heuristic</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="assets/images/Part6/CBdragon_screenshot_4-2_17-52-39.png" width="400px"/>
+				  <figcaption>CBdragon SAH heuristic</figcaption>
+				</td>
+			  </tr>
+</table>
+</div>
+</body>
+
 </html>
