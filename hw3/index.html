@@ -38,7 +38,7 @@
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage: (TODO) <a href="https://cal-cs184-student.github.io/hw-webpages-RandyBui2/hw3/index.html">cal-cs184-student.github.io/hw-webpages-RandyBui2/hw3/index.html/a>
 		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
 		
 		<figure>
@@ -58,7 +58,8 @@
 		world space using c2w rotation matrix, and then normalized. Each is ray is tested against the BVH for intersection, if there is an intersection we shade the pixel based on the surface properties of the collision. Final pixel color is an avearge radience across all samples.
 		
 
-		For triangle intersection we implemented the Möller-Trumbore algorithm, which solves for intersection point directly in barycentric coordinates. We create a linear system expressing using a ray and triangle, which expresses the intersection point both as a point along the ray and as a barycentric combination of the three vertices. Solving this system using cross products and dot products gives us the distance along the ray(t), and two barycentric coordinates (u & v). We can check the intersection by validating the conditions that \(u >0, v>0, u+v < 1 t\in [min_t, max_t] \). If all the conditions are valid, we can interpolate the vertex normals using barycentric weights to get a smooth surface normal at the collision.
+		For triangle intersection we implemented the Möller-Trumbore algorithm, which solves for intersection point directly in barycentric coordinates. We create a linear system expressing using a ray and triangle, which expresses the intersection point both as a point along the ray and as a barycentric combination of the three vertices. Solving this system using cross products and dot products gives us the distance along the ray(t), and two barycentric coordinates (u & v). We can check the intersection by validating the conditions that
+		 \(u >0, v>0, u+v < 1\) \( t\in [min_t, max_t] \). If all the conditions are valid, we can interpolate the vertex normals using barycentric weights to get a smooth surface normal at the collision.
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -85,21 +86,32 @@
 		</div>
 		
 		<h2>Part 2: Bounding Volume Hierarchy</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		When creating the BVH we compute the bounding box over all primitives in the current range, then create a new BVH node with that box. If the number of primitives is below max_leaf_size, we create a leaf node. Otherwise we split the bounding box using a centroid heuristic. We choose the longest axis of the bounding box and compute the average centroid of all primitives along that axis as the split point. Primitives whose centroid fall below the split go left, and the rest go right. If all the primitives lay on one side we do an even split at the median.
+
+
+		Our BVH acceleration dramatically reduces rendering time, reducing the O(N) brute force intersection tests, with a O(Nlog(N)) tree tracersal. From our benchmarking, we see that cow goes from 6.08s to  0.038s (200x speedup), planck: 63.82s to 0.04s (1000x speedup), lucy: 201.39s to 0.04s (5000x speedup). On a slower machine, we might even see that lucy or planck with 100s of thousands of triangles are unrenderable. 
 
 		<h2>Part 3: Direct Illumination</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		For hemisphere sampling, we uniformaly take num_sample numbers of samples in random directions over the hemisphere at the hit point using the hemisphereSampler class. For each sampled direction, we case a shadow ray from the hit point in that direction. If it intersect an emissive surface, we accumulate the contribution using the monte carlo estimator \(f*L_i*cos\theta *2\pi8 /N \) and average across all samples. 
 
+		
+		For importance sampling, we sample directly from each light source using sample_L, which returns the emission,direction,distance and pdf for a point on the light. To check for occlusion: for each light sample, we cast a shadow with the equation max_t = dist(light) - tolerance (EPS_F). If not occluded, and the light is in the upper hemisphere, we accumulate \(f*L_i*cos\theta/pdf\) Point lights are sampled once, as all samples are identical, and then we average per light and sum across all lights.
+
+		Hemisphere sampling produces significantly noisier results because most sampled direction don't point toward any light sources, wasting our samples. Importance sampling concentrates samples toward light sources, reducing varience in soft shadow regions. In order to achieve comparable images, hemisphere sampling would require many more samples, thus importance sampling produces a better result faster, making importance sampling the practical choice.
 		<h2>Part 4: Global Illumination</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		Indirect lighting is implemented by going through each hit point, and first computing the one bounce radience. If the ray depth is greater than 1, we sample a new directuion using the <code>sample_f</code> function, which returns a cosine weighted random direction, and it's pdf. We transform this direction to world space and case a new ray with <code>depth-1</code>. If it intersects the scene, we recursively call <code>at_lease_one_bounce_radiance</code> and accumulate the contribution scaled by <code>f*cos\(\theta\)/pdf</code>. To implement Russian Roulette, we choose a termination probability of 0.3, and use <code>std::coin_flip</code>, terminating immediately if we get a true. Surviving traces get upweighted by \(1/(1-0.3)\) to keep the estimateor unbiased. If <code>isAccumBounces</code> is true we accumulate radiance at every bounce, else we only return radience at <code>max_ray_depth</code> Bounces.
+		
+		
+		images
 
+		The second bounce fills in shadows that direct lighting leaves completely dark, but adds some color bleeding from the walls onto the object. The third bounce adds even more blending, and softens the shadows further. These effects are impossible in rasterization without something like ambient occlusion or light maps, which is why path tracing produces more physically accurate images. Russian roulette has an interesting property where the 100 allowable ray depth looks approximately the same as the lower max ray depth images. This is because the Russian Roulette heuristic terminates a lot of the paths early, and higher bounces contribute exponentially less energy. OThus the estimator correctly captures this without wasting compute on small contributions. 
 		<h2>Part 5: Adaptive Sampling</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		Adaptive sampling concentrates samples in pixels that are hard to converge. For each pixel, we track running statistics \(s1 = \sum \text{illum}\) and \(s2 = \sum \text{illum}^2\). Every <code>samplesPerBatch</code> samples, we compute the mean and variance and check if \(1.96*\sqrt(\text{mean})*\sqrt(\text{variance}) > \text{MaxTolerance}*\text{mean} \). If so, the pixel has converged with a 0.95 confidence, and we can terminate the sampling early. In the rate images, blue pixels converge quickly and red pixels require the most samples. Reds typically form from complex shadow region and high frequency lighting variation areas.
 
 		<h2>(Optional) Part 6: Extra Credit Opportunities</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-		
-		<h2>Additional Notes (please remove)</h2>
+		We implemented SAH BVH construction following a bucket based approach. For each axis, primitives are binned into 12 buckets by it's centroid, and we calculate a cost function <code>1+((SurfaceArea(left)*N_left+SurfaceArea*(right)*N_right)/SurfaceArea(parent))</code>
+
+			<h2>Additional Notes (please remove)</h2>
 		<ul>
 			<li>You can also add code if you'd like as so: <code>code code code</code></li>
 			<li>If you'd like to add math equations, 
