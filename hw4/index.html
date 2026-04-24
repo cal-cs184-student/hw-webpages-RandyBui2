@@ -396,8 +396,7 @@ Because this force propagates through the existing spring network during integra
 		</figure>
 		</div>
 		<b> Wind Simulation:</b> <br>
-		If you implemented any additional technical features for the cloth simulation, clearly describe what you did and provide screenshots that illustrate your work. If it is an improvement compared to something already existing on the cloth simulation, compare and contrast them both in words and in images.
-		<br>
+		I implemented a spatially varying wind force that applies a sinusoidally varying force field across the cloth. Rather than a uniform push in one direction, each point mass receives a force computed from its world-space position and a global time variable:		<br>
 		<code> double wind_x = cp->wind_strength * sin(pm.position.y * cp->wind_frequency + cp->time_step); </code>
 		<br> <code> double wind_z = cp->wind_strength * cos(pm.position.x * cp->wind_frequency + cp->time_step); </code>	
 		<br> This produces realistic rippling and billowing behavior where different parts of the cloth are pushed in different directions simultaneously, creating wave-like motion across the surface.
