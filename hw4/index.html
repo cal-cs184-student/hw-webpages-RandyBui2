@@ -38,11 +38,11 @@
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage: (TODO) <a href="https://cal-cs184-student.github.io/hw-webpages-RandyBui2/hw4/index.html">cal-cs184-student.github.io/hw-webpages-RandyBui2/hw4/index.html</a>
 
 		<br>
 
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to GitHub repository: (TODO) <a href="https://github.com/cal-cs184-student/hw4-clothsim-homewrok4/tree/main#">github.com/cal-cs184-student/hw4-clothsim-homewrok4/tree/main</a>
 
 
 
@@ -192,7 +192,7 @@ For plane collisions, I detect a crossing by checking whether the dot product of
 		</div>
 
 		<h2>Part 4: Handling self-collisions</h2>
-		To handle self-collisions efficiently, I implemented spatial hashing. At each timestep, build_spatial_map partitions 3D space into box volumes with dimensions \(\frac{3w}{num_width_points}\) by \(\frac{3h}{num_height_points}\) by max(w,h), and hashes every point mass into a bucket based on which box it occupies. The hash function combines truncated x, y, z box coordinates with large prime multipliers to produce a unique float key.
+		To handle self-collisions efficiently, I implemented spatial hashing. At each timestep, build_spatial_map partitions 3D space into box volumes with dimensions \(\frac{3w}{num\_width\_points}\) by \(\frac{3h}{num\_height\_points}\) by max(w,h), and hashes every point mass into a bucket based on which box it occupies. The hash function combines truncated x, y, z box coordinates with large prime multipliers to produce a unique float key.
 For each point mass, self_collide looks up only the candidates in the same spatial bucket rather than checking all other point masses. For each candidate pair, if the two point masses are closer than 2 * thickness apart, I compute a correction vector that would push them to exactly that distance apart, accumulate all such corrections, and apply their average divided by simulation_steps to smooth out sudden position jumps. A point mass is never checked against itself via pointer comparison.
 <br>
 		<br>
@@ -274,7 +274,7 @@ The pipeline works in two stages. The vertex shader runs once per vertex and is 
 		</div>
 <b>Blinn-Phong Shading: </b> <br>
 Blinn-Phong models surface lighting as three additive components. The ambient term is a constant baseline color that approximates indirect light bouncing around the scene; it prevents surfaces facing away from the light from going completely black. The diffuse term models light scattering equally in all directions from a matte surface, computed as the dot product of the surface normal and light direction so surfaces facing the light are brighter. The specular term models the sharp highlight from near-mirror reflection, computed using the halfway vector between the light and view directions raised to a power. Higher power produces a tighter, sharper highlight.
-The full model is: \(L = k_a*I_a + k_d*(I/r^2)*max(0, n·l) + k_s*(I/r^2)*max(0, n·h)^p \)
+<br> The full model is: \(L = k_a*I_a + k_d*(I/r^2)*max(0, n·l) + k_s*(I/r^2)*max(0, n·h)^p \)
 
 
 						<div style="display: flex; flex-direction: column; align-items: center;">
