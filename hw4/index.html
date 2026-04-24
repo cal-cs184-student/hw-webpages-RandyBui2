@@ -274,7 +274,7 @@ The pipeline works in two stages. The vertex shader runs once per vertex and is 
 		</div>
 <b>Blinn-Phong Shading: </b> <br>
 Blinn-Phong models surface lighting as three additive components. The ambient term is a constant baseline color that approximates indirect light bouncing around the scene; it prevents surfaces facing away from the light from going completely black. The diffuse term models light scattering equally in all directions from a matte surface, computed as the dot product of the surface normal and light direction so surfaces facing the light are brighter. The specular term models the sharp highlight from near-mirror reflection, computed using the halfway vector between the light and view directions raised to a power. Higher power produces a tighter, sharper highlight.
-<br> The full model is: \(L = k_a*I_a + k_d*(I/r^2)*max(0, n·l) + k_s*(I/r^2)*max(0, n·h)^p \)
+<br> The full model is: \(L = k_a*I_a + k_d*(\frac{I}{r^2})*max(0, n·l) + k_s*(\frac{I}{r^2})*max(0, n·h)^p \)
 
 
 						<div style="display: flex; flex-direction: column; align-items: center;">
